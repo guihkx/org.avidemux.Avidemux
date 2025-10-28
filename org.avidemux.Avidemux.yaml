@@ -57,17 +57,24 @@ modules:
         url: https://code.videolan.org/videolan/x264.git
         commit: 0480cb05fa188d37ae87e8f4fd8f1aea3711f7ee
 
-  - name: 'x265'
+  - name: x265
     buildsystem: cmake-ninja
     builddir: true
     subdir: source
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_CLI=OFF
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5 # TODO: investigate removing this on their next release
     sources:
       - type: archive
-        url: https://deb.debian.org/debian/pool/main/x/x265/x265_3.5.orig.tar.gz
-        sha256: e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8
+        url: https://bitbucket.org/multicoreware/x265_git/downloads/x265_4.1.tar.gz
+        sha256: a31699c6a89806b74b0151e5e6a7df65de4b49050482fe5ebf8a4379d7af8f29
+        x-checker-data:
+          type: anitya
+          project-id: 7275
+          url-template: https://bitbucket.org/multicoreware/x265_git/downloads/x265_$version.tar.gz
+      - type: patch
+        path: patches/x265-cmake-fix.patch # https://bitbucket.org/multicoreware/x265_git/commits/51ae8e922bcc4586ad4710812072289af91492a8
 
   - name: ffnvcodec
     no-autogen: true
@@ -100,12 +107,10 @@ modules:
         url: https://github.com/mean00/avidemux2/releases/download/2.8.1/avidemux_2.8.1.tar.gz
         sha256: 77d9bdca8683ce57c192b69d207cfab7cf92a7759ce0f63fa37b5c8e42ad3da2
       - type: patch
-        path: patches/Dont-redirect-build-output.patch
-      - type: patch
-        path: patches/libavcodec-clip-constants.patch
-      - type: patch
-        path: patches/Force-libdir-location.patch
-      - type: patch
-        path: patches/Fix-issues-with-appstreamcli-validation.patch
-      - type: patch
-        path: patches/Find-nvcodec-headers.patch
+        paths:
+          - patches/Dont-redirect-build-output.patch
+          - patches/libavcodec-clip-constants.patch
+          - patches/Force-libdir-location.patch
+          - patches/Fix-issues-with-appstreamcli-validation.patch
+          - patches/Find-nvcodec-headers.patch
+          - patches/Fix-build-with-x265-4.1.patch # https://github.com/mean00/avidemux2/commit/c16d32a67cdb012db093472ad3776713939a30d1
