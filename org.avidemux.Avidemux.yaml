@@ -1,8 +1,9 @@
 app-id: org.avidemux.Avidemux
 runtime: org.kde.Platform
-runtime-version: 5.15-24.08
+runtime-version: 5.15-25.08
 sdk: org.kde.Sdk
 command: avidemux3_qt5
+
 finish-args:
   - --share=ipc
   - --socket=x11
@@ -11,12 +12,14 @@ finish-args:
   - --socket=pulseaudio
   - --persist=.avidemux6
   - --filesystem=host
+
 cleanup:
   - /include
   - /lib/pkgconfig
   - /share/man
   - '*.a'
   - '*.la'
+
 modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
@@ -93,6 +96,9 @@ modules:
 
   - name: avidemux
     buildsystem: simple
+    build-options:
+      env:
+        CMAKE_POLICY_VERSION_MINIMUM: '3.5' # TODO: investigate removing this on their next release
     build-commands:
       - bash bootStrap.bash --prefix=/app
       - make -C buildCli install
