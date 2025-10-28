@@ -48,14 +48,14 @@ modules:
           project-id: 14474
           url-template: https://downloads.xvid.com/downloads/xvidcore-$version.tar.gz
 
-  - name: 'x264'
+  - name: x264
     config-opts:
       - --disable-cli
       - --enable-shared
     sources:
       - type: git
         url: https://code.videolan.org/videolan/x264.git
-        commit: eaa68fad9e5d201d42fde51665f2d137ae96baf0
+        commit: 0480cb05fa188d37ae87e8f4fd8f1aea3711f7ee
 
   - name: 'x265'
     buildsystem: cmake-ninja
